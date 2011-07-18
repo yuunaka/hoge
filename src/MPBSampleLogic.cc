@@ -7,25 +7,38 @@ namespace mpb {
   
 SampleLogic::SampleLogic(const std::vector<std::string> &requests) {};
 
-SampleLogic::~SampleLogic() {};
+  /*!\brief 
+   *
+   *
+   */
+  SampleLogic::~SampleLogic() {};
 
-int SampleLogic::execute() {
-  DP("SampleLogic::execute()\n");
-  std::cout << "call execute" << std::endl;
-  return 1;
-}
+  /*!\brief 
+   *
+   *
+   */
+  int SampleLogic::execute() {
+    sleep(1);
+    DP("SampleLogic::execute()\n");
+    std::cout << "call execute" << std::endl;
+    return 1;
+  }
 
-result SampleLogic::getResult() {
-  DP("SampleLogic::getResult()\n");
-  struct result test = {
-    (int)1,
-    (int)10,
-    (int)10,
-    (float)10,
-    (float)10,
-    (float)10,
-  };
-  return test;
-}
+  /*!\brief 
+   *
+   *
+   */
+  result SampleLogic::getResult() {
+    DP("SampleLogic::getResult()\n");
+    struct result test = {
+      (int)1,
+      (int)10,
+      (int)10,
+      (float)10,
+      (float)10,
+      (float)10,
+    };
+    return test;
+  }
 
 }

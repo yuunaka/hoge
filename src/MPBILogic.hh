@@ -4,14 +4,18 @@
 #include"common.hh"
 
 namespace mpb {
-  
-class MPBILogic {
-public:
-  //  MPBILogic() {};
-  virtual ~MPBILogic(){};
-  virtual int execute() = 0;
-  virtual result getResult() = 0;
-};
+
+  /*!\brief LogicInterfaceクラス
+   *
+   *
+   */
+  class MPBILogic {
+  public:
+    //  MPBILogic() {};
+    virtual ~MPBILogic(){};
+    virtual int execute() = 0;
+    virtual result getResult() = 0;
+  };
 
 }
 #endif // _MPB_ILOGIC_

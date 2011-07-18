@@ -8,15 +8,19 @@
 
 namespace mpb {
 
-class MPBLogicFactory {
-public:
-  MPBLogicFactory();
-  ~MPBLogicFactory();
+  /*!\brief 
+   *
+   *
+   */
+  class MPBLogicFactory {
+  public:
+    MPBLogicFactory();
+    ~MPBLogicFactory();
 
-  MPBILogic* createInstance(const std::string &type,
-                            const std::vector<std::string> &requests);
+    MPBILogic* createInstance(const std::string &type,
+                              const std::vector<std::string> &requests);
 
-};
+  };
 
 }
 #endif // _MPB_LOGIC_FACTORY_
