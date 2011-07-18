@@ -17,7 +17,7 @@ namespace mpb {
    */
   class MPBController {
   public:
-    MPBController(int argc, char** argv);
+    MPBController(int &argc, char** &argv);
     ~MPBController();
 
     //  int setLogic(MPBLogic logic);
@@ -41,12 +41,14 @@ namespace mpb {
     // bench results foreach children
     result* _results;
 
-    void _usage(char** argv);
-    int _init(int argc, char** argv);
+    void _usage(char** &argv) const;
+    int _init(int &argc, char** &argv);
+    void _printResult(const int &i) const;
+    void _printTotalResult() const;
 
-    int _child(const std::vector<std::string> &reqs, int* pfd_c_p, int* pfd_p_c);
-    int _child_sendReady(const int* pfd);
-    int _child_sendResult(const int* pfd, const result &rt);
+    int _child(const std::vector<std::string> &reqs, int* &pfd_c_p, int* &pfd_p_c);
+    int _child_sendReady(int* &pfd);
+    int _child_sendResult(int* &pfd, const result &rt);
 
     int _parent_waitReady();
     int _parent_waitResult();

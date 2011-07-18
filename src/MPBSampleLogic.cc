@@ -4,8 +4,9 @@
 #include"common.hh"
 
 namespace mpb {
-  
-SampleLogic::SampleLogic(const std::vector<std::string> &requests) {};
+    SampleLogic::SampleLogic(const std::vector<std::string> &requests) : _requests(requests) {
+      // prepare someting
+    };
 
   /*!\brief 
    *
@@ -20,7 +21,10 @@ SampleLogic::SampleLogic(const std::vector<std::string> &requests) {};
   int SampleLogic::execute() {
     sleep(1);
     DP("SampleLogic::execute()\n");
-    std::cout << "call execute" << std::endl;
+    std::vector<std::string>::iterator it = _requests.begin();
+    for(;it!=_requests.end();++it) {
+      std::cout << *it << std::endl;
+    }
     return 1;
   }
 
@@ -34,9 +38,9 @@ SampleLogic::SampleLogic(const std::vector<std::string> &requests) {};
       (int)1,
       (int)10,
       (int)10,
-      (float)10,
-      (float)10,
-      (float)10,
+      (float)0.1,
+      (float)3.5,
+      (float)1,
     };
     return test;
   }

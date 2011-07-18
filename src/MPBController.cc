@@ -18,7 +18,7 @@ namespace mpb {
    * \param[in] argc
    * \param[in] argv
    */
-  MPBController::MPBController(int argc, char** argv) :
+  MPBController::MPBController(int &argc, char** &argv) :
     _concurrency(1),
     _num_request(10),
     _type(std::string("sample")) {
@@ -88,6 +88,12 @@ namespace mpb {
     }
 
     // show results
+    std::cout << "reqs,total,min,max,ave" << std::endl;
+    for(int i=0; i<_concurrency; i++) {
+      _printResult(i);
+    }
+    std::cout << "---------------------------------" << std::endl;
+    _printTotalResult();
     return 1;
   }
 
@@ -96,7 +102,7 @@ namespace mpb {
    * - メンバ変数の初期化
    * - inputファイルの読み込み
    */
-  int MPBController::_init(int argc, char** argv) {
+  int MPBController::_init(int &argc, char** &argv) {
     int opt;
 
     while(( opt = getopt(argc, argv, "c:i:n:t:")) != -1) {
@@ -159,8 +165,53 @@ namespace mpb {
     return 1;
   }
 
+
+
+  /*!\brief 
+   *
+   */
+  void MPBController::_printResult(const int &i) const {
+    // reqs,total,min,max,ave
+    std::cout << _results[i].num_reqs << ",";
+    std::cout << _results[i].total_time << ",";
+    std::cout << _results[i].min << ",";
+    std::cout << _results[i].max << ",";
+    std::cout << _results[i].ave << std::endl;
+  }
+
+
+  /*!\brief 
+   *
+   */
+  void MPBController::_printTotalResult() const {
+    int reqs = 0;int total = 0;
+    float min = 0;float max = 0;float ave = 0;
+
+    min = _results[0].min;
+    max = _results[0].max;
+
+    for(int i=0; i<_concurrency; i++) {
+      reqs  += _results[i].num_reqs;
+      total += _results[i].total_time;
+      if(min > _results[i].min) {
+        min = _results[i].min;
+      }
+      if(max < _results[i].max) {
+        max = _results[i].max;
+      }
+    }
+    ave = total / reqs;
+
+    std::cout << reqs << ",";
+    std::cout << total << ",";
+    std::cout << min << ",";
+    std::cout << max << ",";
+    std::cout << ave << std::endl;
+  }
+
+
   /*!\brief usage    */
-  void MPBController::_usage(char** argv) {
+  void MPBController::_usage(char** &argv) const {
     std::cerr << "usage:" << std::endl;
     std::cerr << argv[0] << " -c concurrency -n num_request per process -t logic type -i inputfile" << std::endl;
     exit(1);
@@ -244,8 +295,8 @@ namespace mpb {
    *
    */
   int MPBController::_child(const std::vector<std::string> &reqs,
-                            int* pfd_c_p,
-                            int* pfd_p_c) {
+                            int* &pfd_c_p,
+                            int* &pfd_p_c) {
 
     close(pfd_c_p[0]); // close read fd
     close(pfd_p_c[1]); // close write fd
@@ -294,7 +345,7 @@ namespace mpb {
    *
    *
    */
-  int MPBController::_child_sendReady(const int* pfd) {
+  int MPBController::_child_sendReady(int* &pfd) {
     struct state wbuf;
     INIT_STATE(wbuf);
 
@@ -307,25 +358,8 @@ namespace mpb {
    *
    *
    */
-  int MPBController::_child_sendResult(const int* pfd, const result &rt) {
+  int MPBController::_child_sendResult(int* &pfd, const result &rt) {
     write(pfd[1],&rt,sizeof(rt));
     return 1;
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
